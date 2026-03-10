@@ -153,12 +153,12 @@ style: |
 
 **Parameters** are the numerical weights inside a neural network that are adjusted during training.
 
-- **GPT-2** (2019): ~1.5 billion parameters
 - **GPT-3** (2020): 175 billion parameters
-- **GPT-4** (2023): ~1 trillion parameters (estimated)
-- **Llama 3.1 405B**: 405 billion parameters
+- **Phi-4-mini** (2025): 3.8 billion parameters
+- **Llama 4 Scout** (2025): 17B model with 16 experts (MoE)
+- **Qwen3 flagship** (2025): 235B total / 22B active parameters (MoE)
 
-> **Rule of thumb:** More parameters = more knowledge capacity, but also more compute and memory required.
+> **Rule of thumb:** More parameters usually mean more capacity, but modern vendors often hide exact counts — and MoE models separate **total** parameters from **active** parameters.
 
 A model's **size** is typically described in billions of parameters (e.g., "a 7B model" or "a 70B model").
 
@@ -176,7 +176,7 @@ A model's **size** is typically described in billions of parameters (e.g., "a 7B
 **Why tokens matter:**
 - Models have a **context window** — the maximum number of tokens they can process at once
 - API pricing is often based on token count
-- GPT-4 Turbo: 128,000 token context window (~100,000 words!)
+- GPT-4.1: 1,000,000 token input context window (published by OpenAI in 2025)
 
 > Tokenization is done by a **tokenizer** (e.g., Byte-Pair Encoding) trained separately from the model.
 
@@ -395,13 +395,15 @@ A key alignment technique used by OpenAI (ChatGPT), Anthropic, and others.
 
 **Context window** = the maximum number of tokens the model can "see" at once
 
-| Model | Context Window |
-|-------|---------------|
-| GPT-3.5-turbo | 16,384 tokens |
-| GPT-4 Turbo | 128,000 tokens |
-| Claude 3.5 Sonnet | 200,000 tokens |
-| Gemini 1.5 Pro | 1,000,000 tokens |
-| Llama 3.1 | 128,000 tokens |
+| Model | Published Context Window |
+|-------|--------------------------|
+| GPT-4.1 | 1,000,000 input tokens |
+| Gemini 2.5 Flash | 1,048,576 input tokens |
+| Llama 4 Scout | 10,000,000 tokens |
+| Llama 4 Maverick | 1,000,000 tokens |
+| Qwen3-2507 | 256,000 native / 1,000,000 extended |
+
+**Current closed-model branding changes fast:** Anthropic's latest Claude API family now includes **Claude Opus 4.6** and **Claude Sonnet 4.6**, so always verify live vendor docs right before a customer-facing presentation.
 
 **Limitations of context:**
 - Beyond the window, the model has no memory of earlier content
@@ -442,12 +444,11 @@ Step 4: Model predicts → "<end_of_sequence>" → Stop!
 **Examples:**
 | Model | Parameters | Creator |
 |-------|-----------|---------|
-| Phi-3 Mini | 3.8B | Microsoft |
-| Phi-3.5 Mini | 3.8B | Microsoft |
-| Gemma 2 2B | 2B | Google |
-| Llama 3.2 1B / 3B | 1B / 3B | Meta |
+| Phi-4-mini | 3.8B | Microsoft |
+| Phi-4-multimodal | 5.6B | Microsoft |
+| Gemma 3 1B / 4B | 1B / 4B | Google |
 | Mistral 7B | 7B | Mistral AI |
-| Qwen2.5 0.5B–7B | 0.5–7B | Alibaba |
+| Qwen3 0.6B–8B | 0.6–8B | Alibaba |
 
 ---
 
@@ -481,7 +482,7 @@ Step 4: Model predicts → "<end_of_sequence>" → Stop!
 - Fine-tune a small model on a specific task → often matches or beats large general models
 - Easier to audit and validate in regulated industries
 
-**Microsoft's Phi series** demonstrated that **data quality beats data quantity** — a 3.8B model trained on curated data outperforms much larger models on many benchmarks.
+**Microsoft's Phi family** is a good example of efficient model design: current Phi-4 variants span **3.8B mini/reasoning**, **5.6B multimodal**, and **15B reasoning-vision** models while still targeting edge and enterprise use cases.
 
 ---
 
@@ -493,7 +494,7 @@ Step 4: Model predicts → "<end_of_sequence>" → Stop!
 
 ## What is MCP?
 
-**Model Context Protocol (MCP)** is an **open standard** (introduced by Anthropic, Nov 2024) that defines how AI applications connect to external data sources and tools.
+**Model Context Protocol (MCP)** is an **open standard** (introduced by Anthropic in 2024) that defines how AI applications connect to external data sources and tools.
 
 > *"MCP is to AI agents what USB-C is to devices — a universal connector."*
 
@@ -561,7 +562,7 @@ Step 4: Model predicts → "<end_of_sequence>" → Stop!
 - Open ecosystem — anyone can contribute MCP servers
 - AI agents can safely and predictably interact with real-world systems
 
-**Adoption:** Supported by Anthropic, Microsoft (VS Code Copilot, Azure AI), OpenAI (added MCP support March 2025), Google, and hundreds of community-built servers.
+**Adoption:** The ecosystem now includes the official MCP spec plus SDKs maintained with partners including **Microsoft** and **Google**, along with Anthropic clients and hundreds of community-built servers.
 
 ---
 
@@ -598,14 +599,14 @@ Step 4: Model predicts → "<end_of_sequence>" → Stop!
 ## OpenAI
 
 **Founded:** 2015 (non-profit) → 2019 (capped-profit)
-**Backed by:** Microsoft ($13B+ investment), other VCs
-**Key models:** GPT-4o, GPT-4 Turbo, o1, o3, DALL-E, Sora, Whisper
+**Backed by:** Microsoft and other investors
+**Key models:** ChatGPT / GPT-5.4, GPT-5.2, GPT-4.1, o3, o4-mini, DALL-E, Sora, Whisper
 
 **Positioning:**
 - Pioneer of the current generative AI wave (ChatGPT launched Nov 2022)
 - API-first platform — powers thousands of applications
-- Strong on reasoning models (o1, o3 series)
-- Consumer: ChatGPT (100M+ users)
+- Strong on reasoning models (o-series) and large-context models (GPT-4.1)
+- Consumer: ChatGPT
 - Enterprise: Azure OpenAI Service (via Microsoft partnership)
 
 **Philosophy:** "Controlled commercialization" toward AGI with safety guardrails
@@ -615,13 +616,13 @@ Step 4: Model predicts → "<end_of_sequence>" → Stop!
 ## Anthropic
 
 **Founded:** 2021 (by ex-OpenAI researchers, including Dario Amodei)
-**Backed by:** Amazon ($4B+), Google ($300M+)
-**Key models:** Claude 3 Opus/Sonnet/Haiku, Claude 3.5, Claude 3.7
+**Backed by:** Amazon and Google
+**Key models:** Claude Opus 4.6, Claude Sonnet 4.6, Claude 4.5, Claude 3.7
 
 **Positioning:**
 - **Safety-first AI** — Constitutional AI and RLHF for alignment
-- Known for very long context windows (200K tokens)
-- Strong on coding (Claude 3.5 Sonnet often top of coding benchmarks)
+- Known for long-context, coding, and agent workflows
+- Strong Claude Code / agent tooling ecosystem
 - Inventor of MCP (Model Context Protocol)
 - More conservative about releasing model weights (closed-source)
 
@@ -632,14 +633,14 @@ Step 4: Model predicts → "<end_of_sequence>" → Stop!
 ## Google DeepMind
 
 **Formed:** 2023 (merger of Google Brain + DeepMind)
-**Key models:** Gemini 1.5 / 2.0 (Ultra, Pro, Flash, Nano), PaLM 2, Imagen, AlphaCode
+**Key models:** Gemini 2.5 / 2.0 (Pro, Flash, Flash-Lite), Gemma 3, Imagen 4, Veo 3, AlphaCode
 
 **Positioning:**
 - Broadest research portfolio (AlphaFold, AlphaGo, AlphaStar, Gemini)
-- **Massive context windows** (Gemini 1.5 Pro: 1M tokens)
+- **Massive context windows** (Gemini 2.5 Flash publishes a 1,048,576-token input limit)
 - Native **multimodal** (text, image, video, audio in one model)
 - Deep integration with Google products (Search, Workspace, Android)
-- Gemini Nano runs on-device on Pixel phones
+- Gemma gives Google a strong open-model story alongside Gemini APIs
 - TPUs give Google unique infrastructure advantage
 
 **Philosophy:** AI for scientific discovery and broad societal benefit
@@ -648,17 +649,17 @@ Step 4: Model predicts → "<end_of_sequence>" → Stop!
 
 ## Meta AI
 
-**Key models:** Llama 2, Llama 3 / 3.1 / 3.2, Code Llama, SAM (vision)
+**Key models:** Llama 3.3, Llama 4 Scout / Maverick, Code Llama, SAM (vision)
 
 **Positioning:**
-- **Open-source champion** — Llama weights are freely downloadable
+- **Open-weight champion** — Llama weights are widely downloadable
 - Powers Meta's own products (Facebook, Instagram, WhatsApp)
-- Llama models have the largest open-source user community
+- Llama models have been downloaded hundreds of millions of times
 - Enables self-hosting, fine-tuning without API fees
 
 **Philosophy:** Open release democratizes AI and accelerates research
 
-**Impact of open-source release:**
+**Impact of open-weight release:**
 - Created entire ecosystem of fine-tuned variants (Mistral, Hermes, etc.)
 - Enables privacy-preserving, on-premise enterprise deployments
 - Sparked debate about safety vs. openness
@@ -671,11 +672,11 @@ Step 4: Model predicts → "<end_of_sequence>" → Stop!
 
 **Strategy:** Partner with OpenAI + open models + own research (Phi series)
 **Products:**
-- **Azure OpenAI Service** — enterprise access to GPT-4 models
+- **Azure OpenAI Service** — enterprise access to GPT-5 / GPT-4.1 / o-series models
 - **Microsoft Copilot** — AI in Microsoft 365 (Word, Excel, Teams, etc.)
 - **GitHub Copilot** — AI coding assistant
 - **Azure AI Foundry** — build, deploy, and manage AI apps
-- **Phi-3 / Phi-4** — Microsoft's own SLMs (open-source)
+- **Phi-4 / Phi-4-mini / Phi-4-multimodal** — Microsoft's own SLMs (open-weight)
 
 **Positioning:** Make AI accessible and safe for enterprises — compliance, security, governance, and integration with existing Microsoft stack
 
@@ -685,7 +686,7 @@ Step 4: Model predicts → "<end_of_sequence>" → Stop!
 
 | Company | Focus | Notable |
 |---------|-------|---------|
-| **Mistral AI** | Open + efficient models | Mistral 7B, Mixtral 8x7B (MoE), Le Chat |
+| **Mistral AI** | Open + efficient models | Mistral Small 3.1, Mistral Large 2, Codestral, Le Chat |
 | **xAI (Elon Musk)** | Alternative to OpenAI | Grok (integrated with X/Twitter) |
 | **Cohere** | Enterprise NLP | Command, Embed, Rerank — B2B focused |
 | **Amazon AWS** | Cloud AI platform | Bedrock (multi-model), Titan, Nova, Trainium chips |
@@ -695,11 +696,11 @@ Step 4: Model predicts → "<end_of_sequence>" → Stop!
 
 ---
 
-## Open Source vs. Closed Source
+## Open Weight vs. Closed API
 
-| | Open Source | Closed Source (API) |
-|--|------------|-------------------|
-| **Examples** | Llama 3, Mistral, Gemma | GPT-4, Claude, Gemini |
+| | Open Weight | Closed API |
+|--|------------|------------|
+| **Examples** | Llama 4, Qwen3, Gemma 3, Phi-4 | ChatGPT / GPT-5.x, Claude 4.x, Gemini 2.5 |
 | **Cost** | Free to download, pay for compute | Pay per token |
 | **Privacy** | Data stays on-premise | Data sent to vendor |
 | **Customization** | Full fine-tuning access | Limited (fine-tuning API) |
@@ -707,7 +708,7 @@ Step 4: Model predicts → "<end_of_sequence>" → Stop!
 | **Deployment** | Self-managed infrastructure | Managed service |
 | **Compliance** | Full data sovereignty | Dependent on vendor |
 
-**Trend:** The gap between open and closed models is narrowing rapidly!
+**Trend:** The gap is narrowing rapidly — especially for focused, cost-sensitive, and long-context workloads.
 
 ---
 
@@ -1033,4 +1034,4 @@ GPT-4 estimated training cost: $50M–$100M in compute
 ---
 
 *Presentation created for AI Fundamentals overview.*
-*Content reflects the state of AI as of early 2025.*
+*Content refreshed with public model information current as of March 2026. Frontier model names, pricing, and limits change quickly — verify vendor docs again before presenting.*

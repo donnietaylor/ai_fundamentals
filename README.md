@@ -2,6 +2,8 @@
 
 A presentation that covers the fundamentals of Artificial Intelligence — from core terminology to enterprise deployment.
 
+The slide content has been refreshed with public model and vendor information current as of **March 2026**.
+
 ## Topics Covered
 
 - **AI vs. ML vs. Deep Learning** — Understanding the hierarchy and differences
