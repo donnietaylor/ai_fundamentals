@@ -1,42 +1,8 @@
----
-marp: true
-theme: default
-paginate: true
-style: |
-  section {
-    font-family: 'Segoe UI', Arial, sans-serif;
-  }
-  section.title {
-    background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
-    color: white;
-    text-align: center;
-  }
-  section.title h1 {
-    font-size: 2.4em;
-    margin-bottom: 0.2em;
-  }
-  section.title p {
-    font-size: 1.1em;
-    opacity: 0.85;
-  }
-  section.section-header {
-    background: #0f3460;
-    color: white;
-    text-align: center;
-    justify-content: center;
-  }
-  h1 { color: #0f3460; border-bottom: 3px solid #e94560; padding-bottom: 0.2em; }
-  h2 { color: #16213e; }
-  strong { color: #e94560; }
-  table { font-size: 0.85em; }
-  code { background: #f4f4f4; padding: 2px 6px; border-radius: 4px; }
----
-
-<!-- _class: title -->
-
 # AI Fundamentals
 
 ### From Terminology to Enterprise Deployment
+
+> **Note:** This presentation is attached to the session in sched.
 
 ---
 
