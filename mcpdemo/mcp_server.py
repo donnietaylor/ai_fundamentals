@@ -100,6 +100,67 @@ async def search_files(path: str = ".", query: str = "") -> str:
     return json.dumps(result, indent=2, default=str)
 
 
+@mcp.tool()
+async def get_top_processes(top: int = 15) -> str:
+    """Return the top Windows processes ranked by RAM usage, with a CPU delta sample.
+
+    Args:
+        top: Number of processes to return (default: 15)
+    """
+    result = await _call_ps("get_top_processes", query=str(top))
+    return json.dumps(result, indent=2, default=str)
+
+
+@mcp.tool()
+async def get_network_info() -> str:
+    """Return details for all active network adapters: IP addresses, MAC,
+    link speed, default gateway, and configured DNS servers."""
+    result = await _call_ps("get_network_info")
+    return json.dumps(result, indent=2, default=str)
+
+
+@mcp.tool()
+async def get_running_services(state: str = "Running") -> str:
+    """List Windows services filtered by state.
+
+    Args:
+        state: Service state to filter on — Running, Stopped, or All (default: Running)
+    """
+    result = await _call_ps("get_running_services", query=state)
+    return json.dumps(result, indent=2, default=str)
+
+
+@mcp.tool()
+async def get_event_log(hours: int = 24) -> str:
+    """Return recent Critical, Error, and Warning entries from the Windows
+    System and Application event logs.
+
+    Args:
+        hours: How many hours back to search (default: 24)
+    """
+    result = await _call_ps("get_event_log", query=str(hours))
+    return json.dumps(result, indent=2, default=str)
+
+
+@mcp.tool()
+async def get_security_status() -> str:
+    """Return Windows Defender antivirus status (real-time protection, definition
+    version, last scan times), firewall profile states, and UAC configuration."""
+    result = await _call_ps("get_security_status")
+    return json.dumps(result, indent=2, default=str)
+
+
+@mcp.tool()
+async def get_windows_updates(days: int = 30) -> str:
+    """Return recently installed Windows updates and any pending updates.
+
+    Args:
+        days: How many days back to check for installed updates (default: 30)
+    """
+    result = await _call_ps("get_windows_updates", query=str(days))
+    return json.dumps(result, indent=2, default=str)
+
+
 # ---------------------------------------------------------------------------
 # Entry-point
 # ---------------------------------------------------------------------------
